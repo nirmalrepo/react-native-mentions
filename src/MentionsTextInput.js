@@ -30,7 +30,7 @@ export default class MentionsTextInput extends Component {
   componentWillMount() {
     this.setState({
       textInputHeight: this.props.textInputMinHeight,
-      listPosition: this.props.listPosition
+      listPosition: this.props.listPosition ? this.props.listPosition : LIST_POSITION.DOWN
     })
   }
 
@@ -112,7 +112,7 @@ export default class MentionsTextInput extends Component {
   render() {
     return (
       <View>
-        {this.state.listPosition ===  LIST_POSITION.DOWN && <Animated.View style={[{ ...this.props.suggestionsPanelStyle }, { height: this.state.suggestionRowHeight }]}>
+        {this.state.listPosition ===  LIST_POSITION.UP && <Animated.View style={[{ ...this.props.suggestionsPanelStyle }, { height: this.state.suggestionRowHeight }]}>
           <FlatList
             keyboardShouldPersistTaps={"always"}
             horizontal={this.props.horizontal}
@@ -137,7 +137,7 @@ export default class MentionsTextInput extends Component {
           style={[{ ...this.props.textInputStyle }, { height: this.state.textInputHeight }]}
           placeholder={this.props.placeholder ? this.props.placeholder : 'Write a comment...'}
         />
-        {this.state.listPosition ===  LIST_POSITION.UP && <Animated.View style={[{ ...this.props.suggestionsPanelStyle }, { height: this.state.suggestionRowHeight }]}>
+        {this.state.listPosition ===  LIST_POSITION.DOWN && <Animated.View style={[{ ...this.props.suggestionsPanelStyle }, { height: this.state.suggestionRowHeight }]}>
           <FlatList
             keyboardShouldPersistTaps={"always"}
             horizontal={this.props.horizontal}
