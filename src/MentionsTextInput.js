@@ -8,6 +8,10 @@ import {
   ViewPropTypes
 } from 'react-native';
 import PropTypes from 'prop-types';
+const LIST_POSITION = {
+  UP: 'up',
+  DOWN: 'down'
+};
 
 export default class MentionsTextInput extends Component {
   constructor() {
@@ -16,6 +20,7 @@ export default class MentionsTextInput extends Component {
       textInputHeight: "",
       isTrackingStarted: false,
       suggestionRowHeight: new Animated.Value(0),
+      listPosition: LIST_POSITION.DOWN
 
     }
     this.isTrackingStarted = false;
@@ -24,7 +29,8 @@ export default class MentionsTextInput extends Component {
 
   componentWillMount() {
     this.setState({
-      textInputHeight: this.props.textInputMinHeight
+      textInputHeight: this.props.textInputMinHeight,
+      listPosition: this.props.listPosition
     })
   }
 
@@ -106,7 +112,7 @@ export default class MentionsTextInput extends Component {
   render() {
     return (
       <View>
-        <Animated.View style={[{ ...this.props.suggestionsPanelStyle }, { height: this.state.suggestionRowHeight }]}>
+        {this.state.listPosition ===  LIST_POSITION.DOWN && <Animated.View style={[{ ...this.props.suggestionsPanelStyle }, { height: this.state.suggestionRowHeight }]}>
           <FlatList
             keyboardShouldPersistTaps={"always"}
             horizontal={this.props.horizontal}
@@ -116,7 +122,7 @@ export default class MentionsTextInput extends Component {
             keyExtractor={this.props.keyExtractor}
             renderItem={(rowData) => { return this.props.renderSuggestionsRow(rowData, this.stopTracking.bind(this)) }}
           />
-        </Animated.View>
+        </Animated.View>}
         <TextInput
           {...this.props}
           onContentSizeChange={(event) => {
@@ -131,6 +137,17 @@ export default class MentionsTextInput extends Component {
           style={[{ ...this.props.textInputStyle }, { height: this.state.textInputHeight }]}
           placeholder={this.props.placeholder ? this.props.placeholder : 'Write a comment...'}
         />
+        {this.state.listPosition ===  LIST_POSITION.UP && <Animated.View style={[{ ...this.props.suggestionsPanelStyle }, { height: this.state.suggestionRowHeight }]}>
+          <FlatList
+            keyboardShouldPersistTaps={"always"}
+            horizontal={this.props.horizontal}
+            ListEmptyComponent={this.props.loadingComponent}
+            enableEmptySections={true}
+            data={this.props.suggestionsData}
+            keyExtractor={this.props.keyExtractor}
+            renderItem={(rowData) => { return this.props.renderSuggestionsRow(rowData, this.stopTracking.bind(this)) }}
+          />
+        </Animated.View>}
       </View>
     )
   }
