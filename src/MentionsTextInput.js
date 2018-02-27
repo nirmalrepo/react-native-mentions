@@ -121,14 +121,14 @@ export default class MentionsTextInput extends Component {
           {...this.props}
           onContentSizeChange={(event) => {
             this.setState({
-              textInputHeight: this.props.textInputMinHeight >= event.nativeEvent.contentSize.height ? this.props.textInputMinHeight : event.nativeEvent.contentSize.height + 10,
+              textInputHeight:event.nativeEvent.contentSize.height
             });
           }}
           ref={component => this._textInput = component}
           onChangeText={this.onChangeText.bind(this)}
           multiline={true}
           value={this.props.value}
-          style={[{ ...this.props.textInputStyle }, { height: Math.min(this.props.textInputMaxHeight, this.state.textInputHeight) }]}
+          style={[{ ...this.props.textInputStyle }, { height: this.state.textInputHeight }]}
           placeholder={this.props.placeholder ? this.props.placeholder : 'Write a comment...'}
         />
       </View>
@@ -175,3 +175,4 @@ MentionsTextInput.defaultProps = {
   textInputMaxHeight: 80,
   horizontal: true,
 }
+
